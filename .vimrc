@@ -33,6 +33,8 @@ filetype indent on
 " Set to auto read when a file is changed from the outside
 set autoread
 
+set path+=**
+
 " :W sudo saves the file
 " (useful for handling the permission-denied error)
 command W w !sudo tee % > /dev/null
