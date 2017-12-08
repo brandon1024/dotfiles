@@ -42,6 +42,11 @@ nnoremap tn :tabnext<Space>
 nnoremap tp :tabprev<Space>
 nnoremap te :tabe<Space>
 
+" Tab and de-tab
+nnoremap <S-Tab> <<
+inoremap <S-Tab> <C-d>
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
