@@ -20,15 +20,15 @@ cp ~/.vimrcrepo/.vimrc ~/.vimrc
 
 ## Mappings
 ### Normal Mode
-#### New Tab: `te` alias for `:tabe`
-#### Next Tab: `tn` alias for `:tabnext`
-#### Previous Tab: `tp` alias for `:tabprev`
-#### Inverse Whitespace Tab: `SHIFT-TAB`
-#### Move Line: `ALT-[jk]` or `Command-[jk]` on mac
+- New Tab: `te` alias for `:tabe`
+- Next Tab: `tn` alias for `:tabnext`
+- Previous Tab: `tp` alias for `:tabprev`
+- Inverse Whitespace Tab: `SHIFT-TAB`
+- Move Line: `ALT-[jk]` or `Command-[jk]` on mac
 
 ### Insert Mode
-#### Inverse Whitespace Tab: SHIFT-TAB
-#### Duplicate Line: CTRL-d
+- Inverse Whitespace Tab: `SHIFT-TAB`
+- Duplicate Line: `CTRL-d`
 
 ## Other Useful Stuff
 - In normal mode, `:find <file>` now performs a recursive file search.
