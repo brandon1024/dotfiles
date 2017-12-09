@@ -51,6 +51,8 @@ inoremap <S-Tab> <C-d>
 " Duplicate line in insert mode using CTRL-D
 imap <C-d> <esc>yypi
 
+set whichwrap=<,>,[,]
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
