@@ -49,9 +49,18 @@ nnoremap <S-Tab> <<
 inoremap <S-Tab> <C-d>
 
 " Duplicate line in insert mode using CTRL-D
-imap <C-d> <esc>yypi
+inoremap <C-d> <esc>yypi
 
+" Allow cursor wrap on normal and insert mode
 set whichwrap=<,>,[,]
+
+" Auto add matching braces in insert mode
+inoremap { {}<Left>
+inoremap [ []<Left>
+inoremap ( ()<Left>
+
+" Switch to insert mode on backspace
+nnoremap <BS> a<BS>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
