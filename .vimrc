@@ -62,6 +62,9 @@ inoremap ( ()<Left>
 " Switch to insert mode on backspace
 nnoremap <BS> a<BS>
 
+" Add :rn command to rename current file
+command! -nargs=1 -complete=file Rn :call Rename(<f-args>) 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -342,4 +345,9 @@ function! VisualSelection(direction, extra_filter) range
 
     let @/ = l:pattern
     let @" = l:saved_reg
+endfunction
+
+function! Rename(newfilename)
+    let l:oldfilename = @%
+    execute "saveas " . a:newfilename . " | call delete(\"" . oldfilename . "\")"
 endfunction
