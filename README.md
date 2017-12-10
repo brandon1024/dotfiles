@@ -32,3 +32,5 @@ cp ~/.vimrcrepo/.vimrc ~/.vimrc
 
 ## Other Useful Stuff
 - In normal mode, `:find <file>` now performs a recursive file search.
+- Opening a bracket or brace will auto complete the ending brace, placing the cursor within them
+- Pressing backspace will change to insert mode and remove the desired character
