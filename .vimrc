@@ -65,6 +65,12 @@ nnoremap <BS> a<BS>
 " Add :rn command to rename current file
 command! -nargs=1 -complete=file Rn :call Rename(<f-args>) 
 
+" Copy selection to clipboard in visual mode
+vnoremap <C-c> "*y
+
+" Paste from clipboard in insert mode
+inoremap <C-v> <ESC>"+pa
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
