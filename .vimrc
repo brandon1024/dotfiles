@@ -59,9 +59,6 @@ inoremap { {}<Left>
 inoremap [ []<Left>
 inoremap ( ()<Left>
 
-" Switch to insert mode on backspace
-nnoremap <BS> a<BS>
-
 " Add :rn command to rename current file
 command! -nargs=1 -complete=file Rn :call Rename(<f-args>) 
 
@@ -70,6 +67,9 @@ vnoremap <C-c> "*y
 
 " Paste from clipboard in insert mode
 inoremap <C-v> <ESC>"+pa
+
+" Backspace in normal mode will delete character and enter insert mode 
+nnoremap <C-h> xi
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
