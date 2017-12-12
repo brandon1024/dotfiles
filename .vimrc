@@ -56,8 +56,15 @@ set whichwrap=<,>,[,]
 
 " Auto add matching braces in insert mode
 inoremap { {}<Left>
+inoremap <expr> } SkipClosingBrace("}")
+
 inoremap [ []<Left>
+inoremap <expr> ] SkipClosingBrace("]")
+
 inoremap ( ()<Left>
+inoremap <expr> ) SkipClosingBrace(")")
+
+inoremap <expr> <CR> BraceCompletionHelper()
 
 " Add :rn command to rename current file
 command! -nargs=1 -complete=file Rn :call Rename(<f-args>) 
@@ -66,6 +73,7 @@ command! -nargs=1 -complete=file Rn :call Rename(<f-args>)
 vnoremap <C-c> "*y
 
 " Paste from clipboard in insert mode
+" Doesn't work correctly in gnome terminal
 inoremap <C-v> <ESC>"+pa
 
 " Backspace in normal mode will delete character and enter insert mode 
@@ -188,7 +196,6 @@ set lbr
 set tw=500
 
 set ai "Auto indent
-set si "Smart indent
 set wrap "Wrap lines
 
 
@@ -356,4 +363,31 @@ endfunction
 function! Rename(newfilename)
     let l:oldfilename = @%
     execute "saveas " . a:newfilename . " | call delete(\"" . oldfilename . "\")"
+endfunction
+
+function! BraceCompletionHelper()
+    let l:last = getline(".")[col(".")-2:col(".")-1]
+    if l:last=="{}" || l:last=="[]" || l:last=="()"
+        return "\<CR>\<ESC>\k\o\<TAB>"
+    else
+        return "\<CR>"
+    endif
+endfunction
+
+function! SkipClosingBrace(brackettype)
+    if a:brackettype == ")"
+        if strpart(getline('.'), col('.')-1, 1) == ")"
+            return "\<Right>"
+        endif
+    elseif a:brackettype == "}"
+        if strpart(getline('.'), col('.')-1, 1) == "}"
+            return "\<Right>"
+        endif
+    elseif a:brackettype == "]"
+        if strpart(getline('.'), col('.')-1, 1) == "]"
+            return "\<Right>"
+        endif
+    endif
+
+    return a:brackettype
 endfunction
