@@ -73,7 +73,7 @@ command! -nargs=1 -complete=file Rn :call Rename(<f-args>)
 vnoremap <C-c> "*y
 
 " Paste from clipboard in insert mode
-" Doesn't work correctly in gnome terminal
+" Doesn't work correctly in gnome-terminal. Use CTRL-SHIFT-V
 inoremap <C-v> <ESC>"+pa
 
 " Backspace in normal mode will delete character and enter insert mode 
@@ -275,12 +275,12 @@ set statusline+=\ %p%%]\            "percent through file
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Move a line of text using ALT+[jk]
-nnoremap <A-j> :m .+1<CR>==
-nnoremap <A-k> :m .-2<CR>==
-inoremap <A-j> <Esc>:m .+1<CR>==gi
-inoremap <A-k> <Esc>:m .-2<CR>==gi
-vnoremap <A-j> :m '>+1<CR>gv=gv
-vnoremap <A-k> :m '<-2<CR>gv=gv
+nnoremap <C-DOWN> :m .+1<CR>==
+nnoremap <C-UP> :m .-2<CR>==
+inoremap <C-DOWN> <Esc>:m .+1<CR>==gi
+inoremap <C-UP> <Esc>:m .-2<CR>==gi
+vnoremap <C-DOWN> :m '>+1<CR>gv=gv
+vnoremap <C-UP> :m '<-2<CR>gv=gv
 
 if has("mac") || has("macunix")
   nmap <D-j> <M-j>
