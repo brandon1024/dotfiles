@@ -105,6 +105,7 @@ endif
 
 " Always show line numbers
 set number
+set relativenumber
 
 "Always show current position
 set ruler
