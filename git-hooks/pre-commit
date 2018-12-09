@@ -1,0 +1,26 @@
+#!/bin/sh
+
+ERRORS=0
+for FILE in `git diff --name-only --cached`; do
+    grep -i 'TODO\|FIXME' $FILE 2>&1 >/dev/null
+    if [ $? -eq 0 ]; then
+        if [ $ERRORS -eq 0 ]; then
+            exec 1>&2
+            echo 'error: commit rejected:'
+            ERRORS=1
+        fi
+
+        echo
+        echo $FILE 'contains TODO or FIXME'
+
+        grep --before-context 1 --after-context 2 -i 'TODO\|FIXME' $FILE
+    fi
+done
+
+if [ $ERRORS -eq 1 ]; then
+    echo
+    echo "You may use 'git commit --no-verify' to override this check."
+    exit 1
+fi
+
+exit

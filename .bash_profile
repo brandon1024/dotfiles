@@ -8,9 +8,14 @@ if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
+function startSSHAgent() {
+    eval `ssh-agent -s`
+    ssh-add
+}
+
 # Environment Variables
 
 # Aliases
 alias ll="ls -la"
 alias swe="cd ~/dev/IntelliJ/swe-senior-design"
-alias ssha="eval `ssh-agent -s` && ssh-add"
+alias ssha="startSSHAgent"
