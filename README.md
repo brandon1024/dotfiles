@@ -4,18 +4,16 @@
 Many of the Vim configurations I found when first learning how to use Vim were pretty crazy. In an effort to better understand how to configure and use Vim, I created this simple .vimrc configuration file. If you're new to Vim, this is a perfect place to start.
 
 To get started, simply clone the repository to your home directory:
-
 ```
-git clone --depth=1 https://github.com/brandon1024/vimrc.git ~/.vimrcrepo
-cp ~/.vimrcrepo/.vimrc ~/.vimrc
+git clone --depth=1 https://github.com/brandon1024/vimrc.git ~/.dotfiles
+cp ~/.dotfiles/.vimrc ~/.vimrc
 ```
 
 This .vimrc is constantly evolving! If you want the latest version, do this:
-
 ```
-cd ~/.vimrcrepo
+cd ~/.dotfiles
 git pull
-cp ~/.vimrcrepo/.vimrc ~/.vimrc
+cp ~/.dotfiles/.vimrc ~/.vimrc
 ```
 
 ### Mappings
@@ -38,5 +36,4 @@ cp ~/.vimrcrepo/.vimrc ~/.vimrc
 ## Bash
 ### Aliases
 - `ll` - `ls -la`
-- `swe` - `cd ~/dev/IntelliJ/swe-senior-design`
-- `ssha` - ```eval `ssh-agent -s` && ssh-add```
+- `ssha` - Start the SSH agent and add your ssh key. You will be prompted to enter your password
