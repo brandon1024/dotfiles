@@ -12,8 +12,8 @@ for FILE in `git diff --name-only --cached`; do
 
         echo
         echo $FILE 'contains TODO or FIXME'
-
-        grep --before-context 1 --after-context 2 -i 'TODO\|FIXME' $FILE
+        echo
+        grep --before-context 1 --after-context 2 --line-number --with-filename -i 'TODO\|FIXME' $FILE
     fi
 done
 
