@@ -1,8 +1,16 @@
 # Git branch in prompt.
 parse_git_branch() {
-    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+    branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/')
+
+    git diff-files --quiet
+    if [ $? -eq 0 ]; then
+        echo -e "\033[32m$branch\033[00m"
+    else
+        echo -e "\033[31m$branch\033[00m"
+    fi
 }
-export PS1="\u@\h \W\[\033[32m\]\$(parse_git_branch)\[\033[00m\] $ "
+
+export PS1="\u@\h \W\$(parse_git_branch) \$ "
 
 if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
