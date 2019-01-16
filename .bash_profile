@@ -37,15 +37,12 @@ if [ -f ~/.git-completion.bash ]; then
   . ~/.git-completion.bash
 fi
 
-function startSSHAgent() {
-    eval `ssh-agent -s`
-    ssh-add
-}
-
 # Environment Variables
+if [ -f ~/.bash_vars ]; then
+    source ~/.bash_env_vars
+fi
 
 # Aliases
-alias ll="ls -la"
-alias swe="cd ~/dev/IntelliJ/swe-senior-design"
-alias ssha="startSSHAgent"
-alias relprof=". ~/.bash_profile"
+if [ -f ~/.bash_aliases ]; then
+    source ~/.bash_aliases
+fi
