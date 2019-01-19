@@ -20,8 +20,13 @@ get_branch_colour() {
     local untrackedchanges=$?
     git diff-files --quiet 2> /dev/null
     local trackedchanges=$?
-    git diff-index --cached --quiet HEAD 2> /dev/null
-    local stagedchanges=$?
+
+    local stagedchanges=0
+    git rev-parse --quiet --verify HEAD &> /dev/null
+    if [ $? -eq 0 ]; then
+        git diff-index --cached --quiet HEAD 2> /dev/null
+        local stagedchanges=$?
+    fi
 
     if [ $stagedchanges -eq 1 ]; then
         echo -e '\033[1;33m'

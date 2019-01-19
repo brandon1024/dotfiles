@@ -1,6 +1,12 @@
 #!/bin/sh
 
 ERRORS=0
+
+git rev-parse --quiet --verify HEAD &> /dev/null
+if [ $? -eq 1 ]; then
+    exit 0
+fi
+
 for FILE in `git diff-index HEAD --name-only --cached`; do
     if [ ! -f $FILE ]; then
         continue
