@@ -1,39 +1,37 @@
 # Brandon's Dotfiles
+Here's where I dump all my config files. Maybe you'll find them useful.
 
-## Vim
-Many of the Vim configurations I found when first learning how to use Vim were pretty crazy. In an effort to better understand how to configure and use Vim, I created this simple .vimrc configuration file. If you're new to Vim, this is a perfect place to start.
+Here's what I have configured so far:
+- bash (.bash_profile, .bash_aliases, .bash_vars)
+- vim (.vimrc)
+- git hooks (git-hooks/)
 
-To get started, simply clone the repository to your home directory:
+## Install
+I put together a little script you can use to install the dotfiles how you like. This script is fairly safe, and will not copy or link dotfiles if there are already existing dotfiles in the home directory. See the usage below:
 ```
-git clone --depth=1 https://github.com/brandon1024/vimrc.git ~/.dotfiles
-cp ~/.dotfiles/.vimrc ~/.vimrc
+usage: ./install [options]
+options:
+	-f, --force     Remove existing dotfiles, if they exist
+	-c, --copy      Copy dotfiles, rather than use symlinks
+	-i, --invert    Invert selection of skipped files
+	    --apply     Generate command to source new bash_profile
+	-v, --version   Show version number and exit
+	-h, --help      Show usage
+
+skipping files:
+	-b, --skip-bash-profile
+			Skip .bash_profile
+	-a, --skip-aliases
+			Skip .bash_aliases
+	-e, --skip-env-vars
+			Skip .bash_vars
+	--skip-vimrc	Skip .vimrc
+	--skip-hooks	Skip git core.hooksPath
 ```
 
-This .vimrc is constantly evolving! If you want the latest version, do this:
+Here's an example:
 ```
-cd ~/.dotfiles
-git pull
-cp ~/.dotfiles/.vimrc ~/.vimrc
+$ git clone --depth=1 git@github.com:brandon1024/dotfiles.git ~/dotfiles
+$ cd ~/dotfiles
+$ eval $(./install.sh --apply)
 ```
-
-### Mappings
-#### Normal Mode
-- New Tab: `te` alias for `:tabe`
-- Next Tab: `tn` alias for `:tabnext`
-- Previous Tab: `tp` alias for `:tabprev`
-- Inverse Whitespace Tab: `SHIFT-TAB`
-- Move Line: `ALT-[jk]` or `Command-[jk]` on mac
-
-#### Insert Mode
-- Inverse Whitespace Tab: `SHIFT-TAB`
-- Duplicate Line: `CTRL-d`
-
-### Other Useful Stuff
-- In normal mode, `:find <file>` now performs a recursive file search.
-- Opening a bracket or brace will auto complete the ending brace, placing the cursor within them
-- Pressing backspace will change to insert mode and remove the desired character
-
-## Bash
-### Aliases
-- `ll` - `ls -la`
-- `ssha` - Start the SSH agent and add your ssh key. You will be prompted to enter your password
