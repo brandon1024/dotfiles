@@ -26,9 +26,11 @@
 " Sets how many lines of history VIM has to remember
 set history=500
 
+" Show a line length guide
+set colorcolumn=80
+
 " Enable filetype plugins
-filetype plugin on
-filetype indent on
+filetype plugin indent on
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -105,7 +107,6 @@ endif
 
 " Always show line numbers
 set number
-set relativenumber
 
 "Always show current position
 set ruler
@@ -261,16 +262,28 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 set laststatus=2
 
 " Format the status line
-set statusline=\ %f\              "file path relative to CWD
-set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
-set statusline+=%{&ff}]         "file format
-set statusline+=[%{getfsize(expand(@%))}b]
-set statusline+=[CWD:\ %r%{getcwd()}%h]
-set statusline+=%=              "left/right separator
-set statusline+=[col:\ %c]      "cursor column
-set statusline+=[line:\ %l/%L   "cursor line/total lines
-set statusline+=\ %p%%]\            "percent through file
-
+set statusline=
+set statusline+=%#DiffAdd#%{(mode()=='n')?'\ \ NORMAL\ ':''}
+set statusline+=%#DiffChange#%{(mode()=='i')?'\ \ INSERT\ ':''}
+set statusline+=%#DiffDelete#%{(mode()=='r')?'\ \ RPLACE\ ':''}
+set statusline+=%#Cursor#%{(mode()=='v')?'\ \ VISUAL\ ':''}
+set statusline+=\ %n\
+set statusline+=%#Visual#
+set statusline+=%{&paste?'\ PASTE\ ':''}
+set statusline+=%{&spell?'\ SPELL\ ':''}
+set statusline+=%#CursorIM#
+set statusline+=%R
+set statusline+=%M
+set statusline+=%#Cursor#
+set statusline+=%#CursorLine#
+set statusline+=\ %t\
+set statusline+=%=
+set statusline+=%#CursorLine#
+set statusline+=\ %Y\
+set statusline+=%#CursorIM#
+set statusline+=\ %3l:%-2c\
+set statusline+=%#Cursor#
+set statusline+=\ %3p%%\
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
