@@ -22,8 +22,8 @@ options:
 	-h, --help      Show usage
 
 skipping files:
-	-b, --skip-bash-profile
-			Skip .bash_profile
+	-b, --skip-bashrc
+			Skip .bashrc
 	-a, --skip-aliases
 			Skip .bash_aliases
 	-e, --skip-env-vars
@@ -65,7 +65,7 @@ function parseargs() {
                 apply=1
                 shift
                 ;;
-            -b|--skip-bash-profile)
+            -b|--skip-bashrc)
                 sk_bp=1
                 shift
                 ;;
@@ -103,20 +103,20 @@ function parseargs() {
 
 parseargs "$@"
 
-# link .bash_profile
+# link .bashrc
 if [ "$sk_bp" -eq 0 ]; then
     if [ "$mode_force" -eq 1 ]; then
         if [ "$mode_copy" -eq 1 ]; then
-            [ -f ~/.bash_profile ] && rm ~/.bash_profile
-            cp "$HERE/.bash_profile" ~/.bash_profile
+            [ -f ~/.bashrc ] && rm ~/.bashrc
+            cp "$HERE/.bashrc" ~/.bashrc
         else
-            ln -f -s "$HERE/.bash_profile" ~/.bash_profile
+            ln -f -s "$HERE/.bashrc" ~/.bashrc
         fi
     else
         if [ "$mode_copy" -eq 1 ]; then
-            [ ! -f ~/.bash_profile ] && cp "$HERE/.bash_profile" ~/.bash_profile
+            [ ! -f ~/.bashrc ] && cp "$HERE/.bashrc" ~/.bashrc
         else
-            [ ! -f ~/.bash_profile ] && ln -s "$HERE/.bash_profile" ~/.bash_profile
+            [ ! -f ~/.bashrc ] && ln -s "$HERE/.bashrc" ~/.bashrc
         fi
     fi
 fi
