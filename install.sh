@@ -2,7 +2,7 @@
 
 ME=`basename "$0"`
 HERE=`pwd`
-VERSION='0.0.1'
+VERSION='0.1.0'
 
 function help() {
 	cat <<EOS
@@ -14,12 +14,11 @@ This script must be executed from the dotfiles repository
 root directory, otherwise this script will not run correctly.
 
 options:
-	-f, --force     Remove existing dotfiles, if they exist
-	-c, --copy      Copy dotfiles, rather than use symlinks
-	-i, --invert    Invert selection of skipped files
-	    --apply	Generate command to source new bash_profile
-	-v, --version   Show version number and exit
-	-h, --help      Show usage
+	-f, --force	Remove existing dotfiles, if they exist
+	-c, --copy	Copy dotfiles, rather than use symlinks
+	-i, --invert	Invert selection of skipped files
+	-v, --version	Show version number and exit
+	-h, --help	Show usage
 
 skipping files:
 	-b, --skip-bashrc
@@ -51,136 +50,101 @@ sk_vim=0
 sk_hk=0
 
 function parseargs() {
-    for arg in "$@"; do
-        case $arg in
-            -f|--f)
-                mode_force=1
-                shift
-                ;;
-            -c|--copy)
-                mode_copy=1
-                shift
-                ;;
-            --apply)
-                apply=1
-                shift
-                ;;
-            -b|--skip-bashrc)
-                sk_bp=1
-                shift
-                ;;
-            -a|--skip-aliases)
-                sk_al=1
-                shift
-                ;;
-            -e|--skip-env-vars)
-                sk_var=1
-                shift
-                ;;
-            --skip-vimrc)
-                sk_vim=1
-                shift
-                ;;
-            --skip-hooks)
-                sk_hk=1
-                shift
-                ;;
-            -h|--help)
-                help
-                exit 0
-                ;;
-            -v|--version)
-                version
-                ;;
-            *)
-                echo "Unknown option: $arg"
-                help
-                exit 1
-                ;;
-        esac
-    done
+	for arg in "$@"; do
+		case $arg in
+			-f|--force)
+				mode_force=1
+				shift
+				;;
+			-c|--copy)
+				mode_copy=1
+				shift
+				;;
+			--apply)
+				apply=1
+				shift
+				;;
+			-b|--skip-bashrc)
+				sk_bp=1
+				shift
+				;;
+			-a|--skip-aliases)
+				sk_al=1
+				shift
+				;;
+			-e|--skip-env-vars)
+				sk_var=1
+				shift
+				;;
+			--skip-vimrc)
+				sk_vim=1
+				shift
+				;;
+			--skip-hooks)
+				sk_hk=1
+				shift
+				;;
+			-h|--help)
+				help
+				exit 0
+				;;
+			-v|--version)
+				version
+				exit 0
+				;;
+			*)
+				echo "Unknown option: $arg"
+				help
+				exit 1
+				;;
+		esac
+	done
 }
 
 parseargs "$@"
 
-# link .bashrc
-if [ "$sk_bp" -eq 0 ]; then
-    if [ "$mode_force" -eq 1 ]; then
-        if [ "$mode_copy" -eq 1 ]; then
-            [ -f ~/.bashrc ] && rm ~/.bashrc
-            cp "$HERE/.bashrc" ~/.bashrc
-        else
-            ln -f -s "$HERE/.bashrc" ~/.bashrc
-        fi
-    else
-        if [ "$mode_copy" -eq 1 ]; then
-            [ ! -f ~/.bashrc ] && cp "$HERE/.bashrc" ~/.bashrc
-        else
-            [ ! -f ~/.bashrc ] && ln -s "$HERE/.bashrc" ~/.bashrc
-        fi
-    fi
-fi
+for file in .bashrc .bash_aliases .bash_vars .vimrc; do
+	if [ "$file" = ".bashrc" ] && [ "$sk_bp" -eq 1 ]; then
+		echo "Skipping .bashrc"
+		continue;
+	fi
 
-# link .bash_aliases
-if [ "$sk_al" -eq 0 ]; then
-    if [ "$mode_force" -eq 1 ]; then
-        if [ "$mode_copy" -eq 1 ]; then
-            [ -f ~/.bash_aliases ] && rm ~/.bash_aliases
-            cp "$HERE/.bash_aliases" ~/.bash_aliases
-        else
-            ln -f -s "$HERE/.bash_aliases" ~/.bash_aliases
-        fi
-    else
-        if [ "$mode_copy" -eq 1 ]; then
-            [ ! -f ~/.bash_aliases ] && cp "$HERE/.bash_aliases" ~/.bash_aliases
-        else
-            [ ! -f ~/.bash_aliases ] && ln -s "$HERE/.bash_aliases" ~/.bash_aliases
-        fi
-    fi
-fi
+	if [ "$file" = ".bash_aliases" ] && [ "$sk_al" -eq 1 ]; then
+		echo "Skipping .bash_aliases"
+		continue;
+	fi
 
-# link .bash_vars
-if [ "$sk_var" -eq 0 ]; then
-    if [ "$mode_force" -eq 1 ]; then
-        if [ "$mode_copy" -eq 1 ]; then
-            [ -f ~/.bash_vars ] && rm ~/.bash_vars
-            cp "$HERE/.bash_vars" ~/.bash_vars
-        else
-            ln -f -s "$HERE/.bash_vars" ~/.bash_vars
-        fi
-    else
-        if [ "$mode_copy" -eq 1 ]; then
-            [ ! -f ~/.bash_vars ] && cp "$HERE/.bash_vars" ~/.bash_vars
-        else
-            [ ! -f ~/.bash_vars ] && ln -s "$HERE/.bash_vars" ~/.bash_vars
-        fi
-    fi
-fi
+	if [ "$file" = ".bash_vars" ] && [ "$sk_var" -eq 1 ]; then
+		echo "Skipping .bash_vars"
+		continue;
+	fi
 
-# link .vimrc
-if [ "$sk_vim" -eq 0 ]; then
-    if [ "$mode_force" -eq 1 ]; then
-        if [ "$mode_copy" -eq 1 ]; then
-            [ -f ~/.vimrc ] && rm ~/.vimrc
-            cp "$HERE/.vimrc" ~/.vimrc
-        else
-            ln -f -s "$HERE/.vimrc" ~/.vimrc
-        fi
-    else
-        if [ "$mode_copy" -eq 1 ]; then
-            [ ! -f ~/.vimrc ] && cp "$HERE/.vimrc" ~/.vimrc
-        else
-            [ ! -f ~/.vimrc ] && ln -s "$HERE/.vimrc" ~/.vimrc
-        fi
-    fi
-fi
+	if [ "$file" = ".vimrc" ] && [ "$sk_vim" -eq 1 ]; then
+		echo "Skipping .vimrc"
+		continue;
+	fi
+
+	if [ "$mode_force" -eq 1 ]; then
+		if [ "$mode_copy" -eq 1 ]; then
+			[ -f "$HOME/$file" ] && rm -v $HOME/$file
+			cp -v $HERE/$file $HOME/$file
+		else
+			ln -v -f -s $HERE/$file $HOME/$file
+		fi
+	else
+		if [ "$mode_copy" -eq 1 ]; then
+			[ ! -f "$HOME/$file" ] && cp -v $HERE/$file $HOME/$file
+		else
+			[ ! -f "$HOME/$file" ] && ln -v -s $HERE/$file $HOME/$file
+		fi
+	fi
+done
 
 # configure git core.hooksPath
 if [ "$sk_hk" -eq 0 ]; then
-    git config --global core.hooksPath "$HERE/git-hooks"
-fi
-
-if [ "$apply" -eq 1 ]; then
-    echo '. ~/.bash_profile'
+	echo "Configuring git core.hooksPath -> $HERE/git-hooks"
+	git config --global core.hooksPath "$HERE/git-hooks"
+else
+	echo "Skipping git hooks"
 fi
 
