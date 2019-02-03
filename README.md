@@ -2,7 +2,7 @@
 Here's where I dump all my config files. Maybe you'll find them useful.
 
 Here's what I have configured so far:
-- bash (.bash_profile, .bash_aliases, .bash_vars)
+- bash (.bashrc, .bash_aliases, .bash_vars)
 - vim (.vimrc)
 - git hooks (git-hooks/)
 
@@ -13,7 +13,6 @@ usage: ./install [options]
 options:
 	-f, --force     Remove existing dotfiles, if they exist
 	-c, --copy      Copy dotfiles, rather than use symlinks
-	-i, --invert    Invert selection of skipped files
 	    --apply     Generate command to source new bash_profile
 	-v, --version   Show version number and exit
 	-h, --help      Show usage
@@ -33,5 +32,6 @@ Here's an example:
 ```
 $ git clone --depth=1 git@github.com:brandon1024/dotfiles.git ~/dotfiles
 $ cd ~/dotfiles
-$ eval $(./install.sh --apply)
+./install.sh
+source ~/.bashrc
 ```
