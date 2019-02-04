@@ -18,6 +18,7 @@ options:
 	-c, --copy	Copy dotfiles, rather than use symlinks
 	-i, --invert	Invert selection of skipped files
 	-v, --version	Show version number and exit
+	    --osx	Generate .bash_profile
 	-h, --help	Show usage
 
 skipping files:
@@ -42,12 +43,12 @@ EOS
 
 mode_force=0
 mode_copy=0
-apply=0
-sk_bp=0
+sk_brc=0
 sk_al=0
 sk_var=0
 sk_vim=0
 sk_hk=0
+gen_bp=0
 
 function parseargs() {
 	for arg in "$@"; do
@@ -60,12 +61,12 @@ function parseargs() {
 				mode_copy=1
 				shift
 				;;
-			--apply)
-				apply=1
+			--osx)
+				gen_bp=1
 				shift
 				;;
 			-b|--skip-bashrc)
-				sk_bp=1
+				sk_brc=1
 				shift
 				;;
 			-a|--skip-aliases)
@@ -104,7 +105,7 @@ function parseargs() {
 parseargs "$@"
 
 for file in .bashrc .bash_aliases .bash_vars .vimrc; do
-	if [ "$file" = ".bashrc" ] && [ "$sk_bp" -eq 1 ]; then
+	if [ "$file" = ".bashrc" ] && [ "$sk_brc" -eq 1 ]; then
 		echo "Skipping .bashrc"
 		continue;
 	fi
@@ -139,6 +140,11 @@ for file in .bashrc .bash_aliases .bash_vars .vimrc; do
 		fi
 	fi
 done
+
+if [ "$gen_bp" -eq 1 ]; then
+	echo 'Generating .bash_profile'
+	echo 'source ~.bashrc' > $HOME/.bash_profile
+fi
 
 # configure git core.hooksPath
 if [ "$sk_hk" -eq 0 ]; then
