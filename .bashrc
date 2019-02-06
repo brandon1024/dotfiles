@@ -29,7 +29,7 @@ get_branch_colour() {
     fi
 
     if [ $stagedchanges -eq 1 ]; then
-        echo -e '\033[33mYellow'
+        echo -e '\033[33m'
     elif [ $trackedchanges -eq 1 ] || [ $untrackedchanges -eq 1 ]; then
         echo -e '\033[0;31m'
     else
