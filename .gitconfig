@@ -1,0 +1,14 @@
+[user]
+	name = Brandon Richardson
+	email = brandon1024.br@gmail.com
+[core]
+	hooksPath = /Users/brandon/dotfiles/git-hooks
+[sendemail]
+	smtpEncryption = tls
+	smtpServer = smtp.gmail.com
+	smtpUser = brandon1024.br@gmail.com
+	smtpServerPort = 587
+[commit]
+    gpgSign = true
+[alias]
+    reference = "show -s --date=short --pretty='format:%h (%s, %ad)'"

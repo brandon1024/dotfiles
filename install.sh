@@ -28,8 +28,10 @@ skipping files:
 			Skip .bash_aliases
 	-e, --skip-env-vars
 			Skip .bash_vars
-	--skip-vimrc	Skip .vimrc
-	--skip-hooks	Skip git core.hooksPath
+	--skip-vimrc
+			Skip .vimrc
+	--skip-gitconfig
+			Skip .gitconfig
 
 EOS
 }
@@ -47,7 +49,7 @@ sk_brc=0
 sk_al=0
 sk_var=0
 sk_vim=0
-sk_hk=0
+sk_gc=0
 gen_bp=0
 
 function parseargs() {
@@ -81,8 +83,8 @@ function parseargs() {
 				sk_vim=1
 				shift
 				;;
-			--skip-hooks)
-				sk_hk=1
+			--skip-gitconfig)
+				sk_gc=1
 				shift
 				;;
 			-h|--help)
@@ -104,7 +106,7 @@ function parseargs() {
 
 parseargs "$@"
 
-for file in .bashrc .bash_aliases .bash_vars .vimrc; do
+for file in .bashrc .bash_aliases .bash_vars .vimrc .gitconfig; do
 	if [ "$file" = ".bashrc" ] && [ "$sk_brc" -eq 1 ]; then
 		echo "Skipping .bashrc"
 		continue;
@@ -125,6 +127,11 @@ for file in .bashrc .bash_aliases .bash_vars .vimrc; do
 		continue;
 	fi
 
+	if [ "$file" = ".gitconfig" ] && [ "$sk_gc" -eq 1 ]; then
+    		echo "Skipping .gitconfig"
+    		continue;
+    	fi
+
 	if [ "$mode_force" -eq 1 ]; then
 		if [ "$mode_copy" -eq 1 ]; then
 			[ -f "$HOME/$file" ] && rm -v $HOME/$file
@@ -143,14 +150,5 @@ done
 
 if [ "$gen_bp" -eq 1 ]; then
 	echo 'Generating .bash_profile'
-	echo 'source ~.bashrc' > $HOME/.bash_profile
+	echo 'source ~/.bashrc' > $HOME/.bash_profile
 fi
-
-# configure git core.hooksPath
-if [ "$sk_hk" -eq 0 ]; then
-	echo "Configuring git core.hooksPath -> $HERE/git-hooks"
-	git config --global core.hooksPath "$HERE/git-hooks"
-else
-	echo "Skipping git hooks"
-fi
-
