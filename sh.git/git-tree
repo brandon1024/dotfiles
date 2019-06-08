@@ -1,0 +1,105 @@
+#!/usr/bin/env bash
+
+# git tree [options]
+# Display list of branches in a tree format. Branches are slash '/' delimited, and are
+# grouped in alphabetical order. For best results, branches should be named according
+# to the convention: [type]/[developer]/[issue#]
+
+set -e
+
+ME="git tree"
+VERSION="V0.0.2"
+
+function indent() {
+	printf "%$(($2 * 4))s%s" "" "$1"
+}
+
+function showversion() {
+	cat <<EOS
+${ME} ${VERSION}
+Author: Brandon Richardson
+EOS
+    exit 2
+}
+
+function help() {
+	cat <<EOS
+usage: ${ME} [options]
+Display a list of git branches formatted as a tree.
+
+options:
+	-a,	--all		List all local and remote branches
+	-r,	--remote	List all remote branches
+	-l,	--local		List all local branches
+	-h,	--help		Show help and exit
+		--version	Show version number and exit
+EOS
+    exit 2
+}
+
+REFS="refs/heads/"
+function parseargs() {
+    # Parse CL args
+    for arg in "$@"; do
+    	case $arg in
+    	    -a|--all)
+    	    REFS="refs/"
+    	    shift
+    	    ;;
+    	    -r|--remote)
+    	    REFS="refs/remotes"
+    	    shift
+    	    ;;
+    	    -l|--local)
+    	    REFS="refs/heads/"
+    	    shift
+    	    ;;
+    	    -h|--help)
+    		help
+    	    ;;
+    	    --version)
+    		showversion
+    		shift
+    	    ;;
+    	    *)
+    		echo "Unknown option: $arg"
+    		help
+    	    ;;
+    	esac
+    done
+}
+
+function listbranches() {
+    PREV=""
+    INIT=1
+    for BRANCH in $(git for-each-ref --format="%(refname:lstrip=1)" $REFS); do
+        CURR=(${BRANCH//// })
+
+        for i in "${!CURR[@]}"; do
+            if [ "$INIT" -eq "1" ]; then
+                indent "${CURR[$i]}" i
+            elif [ "${CURR[$i]}" != "${PREV[$i]}" ]; then
+                indent "${CURR[$i]}" i
+            else
+                continue
+            fi
+
+            if [ "${#CURR[@]}" == $(($i + 1)) ] && [ "$i" -ne "0" ]; then
+                # Print full ref in green
+                printf " (\e[32m%s\e[0m)\n" $BRANCH
+            elif [ "$i" -eq "0" ]; then
+                printf ":\n"
+            else
+                printf "\n"
+            fi
+        done
+
+        INIT=0
+        PREV=(${BRANCH//// })
+    done
+}
+
+(
+    parseargs "$@"
+    listbranches
+) | less -F -R -X

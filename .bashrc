@@ -52,3 +52,8 @@ fi
 if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
+
+mkdirc() {
+    mkdir $1
+    cd $1
+}
