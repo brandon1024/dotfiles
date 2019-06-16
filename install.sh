@@ -18,7 +18,7 @@ options:
 	-c, --copy	Copy dotfiles, rather than use symlinks
 	-i, --invert	Invert selection of skipped files
 	-v, --version	Show version number and exit
-	    --osx	Generate .bash_profile
+	    --gen-bp	Generate .bash_profile
 	-h, --help	Show usage
 
 skipping files:
@@ -63,7 +63,7 @@ function parseargs() {
 				mode_copy=1
 				shift
 				;;
-			--osx)
+			--gen-bp)
 				gen_bp=1
 				shift
 				;;
