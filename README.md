@@ -30,8 +30,9 @@ skipping files:
 
 Here's an example:
 ```
-$ git clone --depth=1 git@github.com:brandon1024/dotfiles.git ~/dotfiles
-$ cd ~/dotfiles
+$ cd ~
+$ git clone --depth=1 git@github.com:brandon1024/.dotfiles.git
+$ cd ~/.dotfiles
 ./install.sh
 source ~/.bashrc
 ```
