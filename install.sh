@@ -2,7 +2,7 @@
 
 ME=`basename "$0"`
 HERE=`pwd`
-VERSION='0.1.0'
+VERSION='0.1.1'
 
 function help() {
 	cat <<EOS
@@ -32,6 +32,8 @@ skipping files:
 			Skip .vimrc
 	--skip-gitconfig
 			Skip .gitconfig
+	--skip-inputrc
+			Skip .inputrc
 
 EOS
 }
@@ -50,6 +52,7 @@ sk_al=0
 sk_var=0
 sk_vim=0
 sk_gc=0
+sk_irc=0
 gen_bp=0
 
 function parseargs() {
@@ -87,6 +90,10 @@ function parseargs() {
 				sk_gc=1
 				shift
 				;;
+			--skip-inputrc)
+				sk_irc=1;
+				shift
+				;;
 			-h|--help)
 				help
 				exit 0
@@ -106,7 +113,7 @@ function parseargs() {
 
 parseargs "$@"
 
-for file in .bashrc .bash_aliases .bash_vars .vimrc .gitconfig; do
+for file in .bashrc .bash_aliases .bash_vars .vimrc .gitconfig .inputrc; do
 	if [ "$file" = ".bashrc" ] && [ "$sk_brc" -eq 1 ]; then
 		echo "Skipping .bashrc"
 		continue;
@@ -128,9 +135,14 @@ for file in .bashrc .bash_aliases .bash_vars .vimrc .gitconfig; do
 	fi
 
 	if [ "$file" = ".gitconfig" ] && [ "$sk_gc" -eq 1 ]; then
+		echo "Skipping .gitconfig"
+		continue;
+	fi
+
+	if [ "$file" = ".inputrc" ] && [ "$sk_irc" -eq 1 ]; then
     		echo "Skipping .gitconfig"
     		continue;
-    	fi
+    fi
 
 	if [ "$mode_force" -eq 1 ]; then
 		if [ "$mode_copy" -eq 1 ]; then

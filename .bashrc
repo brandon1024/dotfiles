@@ -1,3 +1,6 @@
+# Use Vi Instead of Emacs
+set -o vi
+
 get_branch() {
     branch=$(git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/')
     inworktree=$(git rev-parse --is-inside-work-tree 2> /dev/null)
@@ -37,6 +40,7 @@ get_branch_colour() {
     fi
 }
 
+# Bash Prompt
 export PS1="\u@\h \W \[\$(get_branch_colour)\]\$(get_branch)\[\033[0;00m\] → "
 
 if [ -f ~/.git-completion.bash ]; then
@@ -53,7 +57,3 @@ if [ -f ~/.bash_aliases ]; then
     source ~/.bash_aliases
 fi
 
-mkdirc() {
-    mkdir $1
-    cd $1
-}
