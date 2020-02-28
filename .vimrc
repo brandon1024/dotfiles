@@ -13,6 +13,8 @@
 "   Editing:
 "       Duplicate Line: Ctrl-d
 "       Reverse Indent: Shift-Tab
+"   Other:
+"   	Render Markdown to PDF: :Render <optional dest file>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -59,9 +61,6 @@ inoremap ( ()<Left>
 inoremap <expr> ) SkipClosingBrace(")")
 
 inoremap <expr> <CR> BraceCompletionHelper()
-
-" Add :rn command to rename current file
-command! -nargs=1 -complete=file Rn :call Rename(<f-args>) 
 
 " Backspace in normal mode will delete character and enter insert mode 
 nnoremap <C-h> xi
@@ -232,15 +231,11 @@ endif
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Misc
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Add :rn command to rename current file
+command! -nargs=1 -complete=file Rn :call Rename(<f-args>)
+
 function! Rename(newfilename)
     let l:oldfilename = @%
     execute "saveas " . a:newfilename . " | call delete(\"" . oldfilename . "\")"
@@ -272,3 +267,29 @@ function! SkipClosingBrace(brackettype)
 
     return a:brackettype
 endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Markdon Pandoc Renderer
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if executable("pandoc") == 1
+	" Add :Render command to render markdown to pdf using Pandoc
+	command! -nargs=? -complete=file Render :call RenderMarkdown(<f-args>) 
+	
+	function! RenderMarkdown(...) abort
+		if a:0 == 1
+			" write buffer to stdin of pandoc
+			execute "write !pandoc -V geometry:margin=2cm -f markdown -t pdf -o " . shellescape(a:1)
+	
+			" open file
+			execute "!open -a Preview " . shellescape(a:1)
+		elseif a:0 == 0
+			" write buffer to stdin of pandoc with output to temporary file
+	
+			let l:tmpfile = tempname()
+			execute "write !pandoc -V geometry:margin=2cm -f markdown -t pdf -o " . l:tmpfile
+			execute "!open -a Preview " . l:tmpfile
+		else
+			throw "RenderMarkdown: Unexpected number of arguments: " . a:0
+		endif
+	endfunction
+endif
