@@ -244,7 +244,7 @@ endfunction
 function! BraceCompletionHelper()
     let l:last = getline(".")[col(".")-2:col(".")-1]
     if l:last=="{}" || l:last=="[]" || l:last=="()"
-        return "\<CR>\<ESC>\k\o\<TAB>"
+        return "\<CR>\<ESC>\k\o"
     else
         return "\<CR>"
     endif
@@ -278,18 +278,30 @@ if executable("pandoc") == 1
 	function! RenderMarkdown(...) abort
 		if a:0 == 1
 			" write buffer to stdin of pandoc
-			execute "write !pandoc -V geometry:margin=2cm -f markdown -t pdf -o " . shellescape(a:1)
-	
+			execute "write !pandoc -V geometry:margin=2cm -f markdown -t pdf --pdf-engine=xelatex -V mainfont=\"Latin Modern Math\" -o " . shellescape(a:1)
+
+			if v:shell_error != 0
+				return
+			endif
+
 			" open file
-			execute "!open -a Preview " . shellescape(a:1)
+			silent execute "!open -a Preview " . shellescape(a:1)
 		elseif a:0 == 0
 			" write buffer to stdin of pandoc with output to temporary file
 	
 			let l:tmpfile = tempname()
-			execute "write !pandoc -V geometry:margin=2cm -f markdown -t pdf -o " . l:tmpfile
-			execute "!open -a Preview " . l:tmpfile
+			execute "write !pandoc -V geometry:margin=2cm -f markdown -t pdf --pdf-engine=xelatex -o " . l:tmpfile
+
+			if v:shell_error != 0
+				return
+			endif
+
+			" open file
+			silent execute "!open -a Preview " . l:tmpfile
 		else
 			throw "RenderMarkdown: Unexpected number of arguments: " . a:0
 		endif
 	endfunction
+else
+	command! -nargs=? -complete=file Render :echoerr "Unable to locate pandoc executable. Is pandoc installed?"
 endif
